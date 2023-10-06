@@ -61,7 +61,7 @@ class Stocks(Base):
     __tablename__ = "stocks"
     stock_id = Column(Integer, primary_key=True, nullable=False)
     symbol = Column(String, nullable=False)
-    category = Column(String, nullable=False)
+    sector = Column(String, nullable=False)
     ltp = Column(Float, nullable=False)
     pe = Column(Float, nullable=False)
     pb = Column(Float, nullable=False)
