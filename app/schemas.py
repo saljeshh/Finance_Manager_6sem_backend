@@ -32,6 +32,7 @@ class TransactionBase(BaseModel):
     account_type: str
     amount: float
     category: str
+    timestamp: datetime
 
 
 class InvestableBase(BaseModel):

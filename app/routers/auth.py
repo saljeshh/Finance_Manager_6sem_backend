@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 import schemas, utils, models
 from database import get_db
 import oauth2
+from config import settings
 
 router = APIRouter(tags=["Authentication"])
 
@@ -49,9 +50,8 @@ async def login_account(users: schemas.UserLogin, db: Session = Depends(get_db))
     # create jwt token
     access_token = oauth2.create_access_token(data={"user_id": user.user_id})
 
-    return {"access_token": access_token, "token_type": "bearer"}
-
-
-@router.post("/logout")
-async def logout_account():
-    return {"data": "logut"}
+    return {
+        "access_token": access_token,
+        "token_expiry": settings.access_token_expire_minutes,
+        "token_type": "bearer",
+    }
