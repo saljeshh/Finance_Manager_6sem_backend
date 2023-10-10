@@ -52,6 +52,5 @@ async def login_account(users: schemas.UserLogin, db: Session = Depends(get_db))
 
     return {
         "access_token": access_token,
-        "token_expiry": settings.access_token_expire_minutes,
         "token_type": "bearer",
     }

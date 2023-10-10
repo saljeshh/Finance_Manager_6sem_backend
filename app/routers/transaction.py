@@ -1,10 +1,11 @@
-from fastapi import HTTPException, Response, status, Depends, APIRouter
+from fastapi import HTTPException, status, Depends, APIRouter
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from database import get_db
 import schemas, models, oauth2
 from routers.accounts import update_account
 from schemas import AccountsBase
+from datetime import datetime
 
 
 router = APIRouter(prefix="/api/transactions", tags=["Transaction"])
@@ -29,12 +30,19 @@ def create_transaction(
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user),
 ):
+    # Assuming transaction_data contains the timestamp as a string
+    timestamp_str = str(transaction.timestamp)
+
+    # Parse the timestamp string into a datetime object
+    timestamp = datetime.strptime(timestamp_str, "%Y-%m-%d %H:%M:%S%z")
+
     new_transaction = models.Transactions(
         user_id=current_user.user_id,
         amount=transaction.amount,
         transaction_type=transaction.transaction_type,
         account_type=transaction.account_type,
         category=transaction.category,
+        timestamp=timestamp,
     )
 
     db.add(new_transaction)
@@ -70,7 +78,9 @@ def create_transaction(
     except Exception as e:
         raise HTTPException(status_code=500, detail=e)
 
-    return {"message": "Transactions added successfully"}
+    return {
+        "message": "Transactions added successfully",
+    }
 
 
 @router.put("/{id}")
@@ -106,8 +116,6 @@ def update_transaction(
     transactions_database.amount = new_amount
     transactions_database.transaction_type = new_transaction_type
     transactions_database.category = new_category
-
-    db.commit()
 
     try:
         # # fetch the current user account
@@ -150,6 +158,8 @@ def update_transaction(
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=e)
+
+    db.commit()
 
     return {"message": "Transaction Updated successfully"}
 

@@ -43,9 +43,10 @@ class Transactions(Base):
     transaction_type = Column(String, nullable=False)
     account_type = Column(String, nullable=False)
     category = Column(String, nullable=False)
-    timestamp = Column(
-        TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
-    )
+    # timestamp = Column(
+    #     TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
+    # )
+    timestamp = Column(TIMESTAMP(timezone=True), nullable=False)
 
 
 class Investable(Base):

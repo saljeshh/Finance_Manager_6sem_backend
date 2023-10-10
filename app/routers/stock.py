@@ -33,7 +33,6 @@ def stock_data_according_to_category(stock, investable_amount):
 def filter_and_process_stocks(stocks, id, db):
     accounts_connector = get_accounts(db, id)
     investable_amount = accounts_connector.investable_balance
-
     filtered_stocks = []
 
     for stock in stocks:
@@ -106,6 +105,10 @@ def filter_and_process_stocks(stocks, id, db):
                 filtered_stocks.append(stock_data)
 
     return filtered_stocks
+
+
+def test(stocks):
+    print(stocks)
 
 
 @router.get("/")

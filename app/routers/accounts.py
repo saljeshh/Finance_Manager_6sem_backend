@@ -99,3 +99,5 @@ def update_account(
     db.commit()
 
     return {"message": "Updated successfully"}
+
+
